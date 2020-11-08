@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "242102556021",
+    "firebase_url": "https://indoor-hydroponics.firebaseio.com",
+    "project_id": "indoor-hydroponics",
+    "storage_bucket": "indoor-hydroponics.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242102556021:android:5d2c1861e28ce6daba2f3c",
+        "android_client_info": {
+          "package_name": "com.example.hydroponicsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242102556021-sjq7c82v0upu8pi44iu77gjtdmed0c96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBi0VLqL64xv8thd2qhnH8XeWrrYjSm7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242102556021-sjq7c82v0upu8pi44iu77gjtdmed0c96.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
