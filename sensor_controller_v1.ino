@@ -1,4 +1,4 @@
-#include<Servo.h>
+#include <Servo.h>
 #include "DFRobot_EC.h"
 #include <OneWire.h>
 #include <DFRobot_PH.h>
@@ -152,12 +152,12 @@ float readTemperature(){
 
     if ( OneWire::crc8( addr, 7) != addr[7]) {
         Serial.println("CRC is not valid!");
-        return -1000;
+        return -999;
     }
 
     if ( addr[0] != 0x10 && addr[0] != 0x28) {
         Serial.print("Device is not recognized");
-        return -1000;
+        return -998;
     }
 
     ds.reset();
@@ -180,7 +180,8 @@ float readTemperature(){
 
     float tempRead = ((MSB << 8) | LSB); //using two's compliment
     float TemperatureSum = tempRead / 16;
-
+    Serial.print("temperature:");
+    Serial.println(TemperatureSum,1);
     return TemperatureSum;
 }
 
@@ -226,6 +227,11 @@ void replacePH(float pH){
     }
     delay(2000);
 
+    //Close both valves
+    HCl.write(0);
+    NaOH.write(0);
+
+    //Take another pH reading
     ph = getPH();
   }
 }
@@ -251,6 +257,11 @@ void replaceEC(float EC){
     fertilizer.write(output);
 
     delay(2000);
+
+    //Close the valve
+    fertilizer.write(0);
+
+    //Take another EC reading
     ec = getEC();
   }
 }
