@@ -3,4 +3,11 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="preference_file_key">SharedPreferenceFileKey</string>
+    <string name="saved_username_key">username</string>
+    <string name="saved_username_default_key">username_default</string>
+    <string name="celcius_key">celcius</string>
+    <string name="systemIDs">systemIDs</string>
+    <string name="password_key">password</string>
+    <string name="password_default_key">password_default</string>
 </resources>

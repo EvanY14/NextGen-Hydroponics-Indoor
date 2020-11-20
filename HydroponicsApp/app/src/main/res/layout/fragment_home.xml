@@ -32,17 +32,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.402" />
 
-    <Switch
-        android:id="@+id/temp_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fahrenheit"
-        app:layout_constraintBottom_toTopOf="@+id/EC_tv"
-        app:layout_constraintEnd_toEndOf="@+id/temp_tv"
-        app:layout_constraintStart_toStartOf="@+id/temp_tv"
-        app:layout_constraintTop_toBottomOf="@+id/temp_tv"
-        app:layout_constraintVertical_bias="0.19" />
-
     <TextView
         android:id="@+id/pH_tv"
         android:layout_width="wrap_content"
@@ -124,4 +113,29 @@
         app:layout_constraintStart_toEndOf="@+id/EC_tv"
         app:layout_constraintTop_toTopOf="@+id/EC_tv"
         app:layout_constraintVertical_bias="0.76" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addSystemBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="68dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintBottom_toTopOf="@+id/text_home"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="330dp"
+        android:layout_height="14dp"
+        android:max="10"
+        android:progress="3"
+        app:layout_constraintBottom_toTopOf="@+id/update_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EC_tv_out" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
