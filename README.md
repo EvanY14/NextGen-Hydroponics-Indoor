@@ -8,3 +8,5 @@ Main code is contained in the sensor_controller_v1.ino file. The libraries subfo
 10/30/20: Added water pump functionality via relay. Also added potential for automated nutrient delivery.
 
 11/8/20: Added code for the app. It is based on a Firebase database, which holds all the sensor data from the Arduino
+
+11/20/20: Added ability to add multiple systems per user
