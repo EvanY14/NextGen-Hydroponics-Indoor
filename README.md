@@ -10,3 +10,5 @@ Main code is contained in the sensor_controller_v1.ino file. The libraries subfo
 11/8/20: Added code for the app. It is based on a Firebase database, which holds all the sensor data from the Arduino
 
 11/20/20: Added ability to add multiple systems per user
+
+11/24/20: Changed app to read sensor data and system IDs from the Realtime Database instead of Cloud Firestore to make it compatible with the Arduino
