@@ -222,6 +222,7 @@ public class HomeFragment extends Fragment {
                 ph_tv.setText(""+system.getPh());
                 EC_tv.setText(""+system.getEc());
                 systemName_tv.setText(system.getSystemName());
+                celcius = sharedPref.getBoolean(getString(R.string.celcius_key), false);
                 temp_tv.setText(celcius ? ""+system.getTempC():""+system.getTempF());
             }
 
