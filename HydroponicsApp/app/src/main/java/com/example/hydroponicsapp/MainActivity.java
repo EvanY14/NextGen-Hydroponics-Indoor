@@ -71,35 +71,28 @@ public class MainActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if(task.isSuccessful() && !task.getResult().isEmpty()){
-                                        db.collection("users")
-                                                .whereEqualTo("password", passwordText)
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        if (task.isSuccessful() && !task.getResult().isEmpty()){
-                                                            sharedPref.edit()
-                                                                    .putString(getString(R.string.saved_username_key), userText)
-                                                                    .commit();//Add the username to the SharedPreferences so the user stays logged in
-                                                            sharedPref.edit()
-                                                                    .putString(getString(R.string.password_key), passwordText)
-                                                                    .commit();
-                                                            username.setVisibility(View.GONE);
-                                                            password.setVisibility(View.GONE);
-                                                            loginBtn.setVisibility(View.GONE);
-                                                            createAcctBtn.setVisibility(View.GONE);
-                                                            navView.setVisibility(View.VISIBLE);
-                                                            nav_host.setVisibility(View.VISIBLE);
-                                                        }else{
-                                                            Toast invalidPassword = Toast.makeText(MainActivity.this, "Invalid Password", Toast.LENGTH_LONG);
-                                                            invalidPassword.show(); //Show Toast saying that the password is incorrect
-                                                        }
-                                                    }
-                                                });
-                                    }else{
-                                        Toast invalidUser = Toast.makeText(MainActivity.this, "Invalid Username", Toast.LENGTH_LONG);
-                                        invalidUser.show(); //Show Toast saying the username is incorrect
+                                    if (task.isSuccessful() && !task.getResult().isEmpty()){ //Check if username exists
+                                        QuerySnapshot result = task.getResult();
+                                        if(result.getDocuments().get(0).get("password").equals(passwordText)){
+                                        sharedPref.edit()
+                                                .putString(getString(R.string.saved_username_key), userText)
+                                                .commit();//Add the username to the SharedPreferences so the user stays logged in
+                                        sharedPref.edit()
+                                                .putString(getString(R.string.password_key), passwordText)
+                                                .commit();
+                                        username.setVisibility(View.GONE);
+                                        password.setVisibility(View.GONE);
+                                        loginBtn.setVisibility(View.GONE);
+                                        createAcctBtn.setVisibility(View.GONE);
+                                        navView.setVisibility(View.VISIBLE);
+                                        nav_host.setVisibility(View.VISIBLE);
+                                    } else {
+                                        Toast invalidPassword = Toast.makeText(MainActivity.this, "Invalid Password", Toast.LENGTH_LONG);
+                                        invalidPassword.show(); //Show Toast saying that the password is incorrect
+                                    }
+                                }else{
+                                        Toast invalidUser = Toast.makeText(MainActivity.this, "User does not exist", Toast.LENGTH_LONG);
+                                        invalidUser.show(); //Show Toast saying that the username is incorrect
                                     }
                                 }
                             });
@@ -157,12 +150,11 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+                R.id.navigation_home, R.id.navigation_settings, R.id.navigation_notifications)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
     }
 
 }

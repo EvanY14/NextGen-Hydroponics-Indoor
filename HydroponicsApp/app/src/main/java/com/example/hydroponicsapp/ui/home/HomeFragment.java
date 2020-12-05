@@ -29,6 +29,11 @@ import com.example.hydroponicsapp.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -45,9 +50,9 @@ import static android.content.ContentValues.TAG;
 
 public class HomeFragment extends Fragment {
     private static Set<String> systemIDs;
-    SharedPreferences sharedPref;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private SharedPreferences sharedPref;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     private HomeViewModel homeViewModel;
     private Button update_btn;
@@ -56,6 +61,7 @@ public class HomeFragment extends Fragment {
     private TextView ph_tv;
     private TextView EC_tv;
     private TextView temp_tv;
+    private TextView systemName_tv;
     private Switch celciusSwitch;
     private double ph, ec, tempC, tempF;
     private boolean celcius = false;
@@ -79,10 +85,28 @@ public class HomeFragment extends Fragment {
         temp_tv = root.findViewById(R.id.temp_tv_out);
         seekBar = root.findViewById(R.id.seekBar);
         addSystemBtn = root.findViewById(R.id.addSystemBtn);
+        systemName_tv = root.findViewById(R.id.system_name_tv);
         systemIDs = sharedPref.getStringSet(getString(R.string.systemIDs), new HashSet<String>());
         for(String s:systemIDs){
             systemIDsList.add(s);
         }
+
+        ValueEventListener dataUpdateListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get System object and use the values to update the UI
+                if(systemIDsList.size() != 0)
+                    getData(systemIDsList.get(currentSystem));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadSystem:onCancelled", error.toException());
+                // ...
+            }
+        };
+        database.addValueEventListener(dataUpdateListener);
         /*if(systemIDs.isEmpty()){
             db.collection("users")
                     .whereEqualTo("user", sharedPref.getString(getString(R.string.saved_username_key), getString(R.string.saved_username_default_key)))
@@ -139,7 +163,8 @@ public class HomeFragment extends Fragment {
                 for(String s:systemIDs){
                     systemIDsList.add(s);
                 }
-                db.collection("systemIDs")
+                getData(systemIDsList.get(currentSystem));
+                /*db.collection("systemIDs")
                         .whereEqualTo("systemID", systemIDsList.get(currentSystem))
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -166,36 +191,12 @@ public class HomeFragment extends Fragment {
                                     Toast.makeText(getContext(), "Unable to retrieve data", Toast.LENGTH_LONG);
                                 }
                             }
-                        });
+                        });*/
             }
 
         });
         if(!name.equals(sharedPref.getString("username_default", "username_default"))) {
-            Log.d("System IDs Default", systemIDsList.toString());
-            db.collection("systemIDs")
-                    .whereEqualTo("systemID", systemIDsList.get(currentSystem))
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                                QuerySnapshot document = task.getResult();
-                                //Users user = new Users(document);
-                                System system = new System(document);
-                                ph = system.getPh();
-                                ec = system.getEc();
-                                tempC = system.getTempC();
-                                tempF = system.getTempF();
-                                ph_tv.setText("" + ph);
-                                EC_tv.setText("" + ec);
-                                celcius = sharedPref.getBoolean(getString(R.string.celcius_key), false);
-                                temp_tv.setText(celcius ? "" + tempC + "C" : "" + tempF + "F");
-                            } else {
-                                Log.d(TAG, "get failed with ", task.getException());
-                                Toast.makeText(getContext(), "Unable to retrieve data", Toast.LENGTH_LONG);
-                            }
-                        }
-                    });
+            getData(systemIDsList.get(currentSystem));
             seekBar.setMax(systemIDsList.size()-1);
         }else{
             seekBar.setMax(systemIDsList.size());
@@ -209,5 +210,25 @@ public class HomeFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    private void getData(String systemID){
+        database.child(systemID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("Test", "Worked");
+                System system = snapshot.getValue(System.class);
+                // ...
+                ph_tv.setText(""+system.getPh());
+                EC_tv.setText(""+system.getEc());
+                systemName_tv.setText(system.getSystemName());
+                temp_tv.setText(celcius ? ""+system.getTempC():""+system.getTempF());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

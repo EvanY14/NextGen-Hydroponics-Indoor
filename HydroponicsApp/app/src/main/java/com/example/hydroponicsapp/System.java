@@ -3,11 +3,15 @@ package com.example.hydroponicsapp;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class System {
-    private String systemID;
+    private String systemID, systemName;
     private double ph, ec, tempC, tempF;
 
-    public System(String systemID, double ph, double ec, double tempC, double tempF) {
+    public System(){
+
+    }
+    public System(String systemID, String systemName, double ph, double ec, double tempC, double tempF) {
         this.systemID = systemID;
+        this.systemName = systemName;
         this.ph = ph;
         this.ec = ec;
         this.tempC = tempC;
@@ -19,6 +23,7 @@ public class System {
         this.ec = (double) document.getDocuments().get(0).get("ec");
         this.tempC = (double) document.getDocuments().get(0).get("tempC");
         this.tempF = (double) document.getDocuments().get(0).get("tempF");
+        this.systemName = (String) document.getDocuments().get(0).get("systemName");
     }
     public String getSystemID() {
         return systemID;
@@ -58,5 +63,13 @@ public class System {
 
     public void setTempF(double tempF) {
         this.tempF = tempF;
+    }
+
+    public String getSystemName() {
+        return systemName;
+    }
+
+    public void setSystemName(String systemName) {
+        this.systemName = systemName;
     }
 }
