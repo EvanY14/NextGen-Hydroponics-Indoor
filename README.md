@@ -12,3 +12,5 @@ Main code is contained in the sensor_controller_v1.ino file. The libraries subfo
 11/20/20: Added ability to add multiple systems per user
 
 11/24/20: Changed app to read sensor data and system IDs from the Realtime Database instead of Cloud Firestore to make it compatible with the Arduino
+
+12/5/20: Updated the color scheme to green and white instead of black and purple.
